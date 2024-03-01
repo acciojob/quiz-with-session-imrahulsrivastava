@@ -1,7 +1,3 @@
-//your JS code here.
-
-// Do not change code below this line
-// This code will just display the questions to the screen
 const questions = [
   {
     question: "What is the capital of France?",
@@ -20,7 +16,7 @@ const questions = [
   },
   {
     question: "Which is the largest planet in our solar system?",
-    choices: ["Earth", "Jupiter", "Mars"],
+    choices: ["Earth", "Jupiter", "Mars", "Mercury"],
     answer: "Jupiter",
   },
   {
@@ -30,13 +26,27 @@ const questions = [
   },
 ];
 
-// Display the quiz questions and choices
+let userAnswers = [];
+
+const questionsContainer = document.getElementById("questions");
+const submitButton = document.getElementById("submit");
+const scoreContainer = document.getElementById("score");
+
+renderQuestions();
+
+submitButton.addEventListener("click", () => {
+  questionsContainer.innerHTML = "";
+  const score = calculateScore();
+  scoreContainer.textContent = `Your score is ${score} out of ${questions.length}.`;
+});
+
 function renderQuestions() {
   for (let i = 0; i < questions.length; i++) {
     const question = questions[i];
     const questionElement = document.createElement("div");
     const questionText = document.createTextNode(question.question);
     questionElement.appendChild(questionText);
+
     for (let j = 0; j < question.choices.length; j++) {
       const choice = question.choices[j];
       const choiceElement = document.createElement("input");
@@ -46,11 +56,25 @@ function renderQuestions() {
       if (userAnswers[i] === choice) {
         choiceElement.setAttribute("checked", true);
       }
+      choiceElement.addEventListener("change", (event) => {
+        userAnswers[i] = event.target.value;
+
+        sessionStorage.setItem("progress", JSON.stringify(userAnswers));
+      });
       const choiceText = document.createTextNode(choice);
       questionElement.appendChild(choiceElement);
       questionElement.appendChild(choiceText);
     }
-    questionsElement.appendChild(questionElement);
+    questionsContainer.appendChild(questionElement);
   }
 }
-renderQuestions();
+
+function calculateScore() {
+  let score = 0;
+  for (let i = 0; i < questions.length; i++) {
+    if (userAnswers[i] === questions[i].answer) {
+      score++;
+    }
+  }
+  return score;
+}
