@@ -26,7 +26,7 @@ const questions = [
   },
 ];
 
-let userAnswers = [];
+let userAnswers = JSON.parse(sessionStorage.getItem("progress")) || [];
 
 const questionsContainer = document.getElementById("questions");
 const submitButton = document.getElementById("submit");
@@ -38,6 +38,7 @@ submitButton.addEventListener("click", () => {
   setCheckedAttributes();
   const score = calculateScore();
   scoreContainer.textContent = `Your score is ${score} out of ${questions.length}.`;
+  localStorage.setItem("score", score);
 });
 
 function renderQuestions() {
@@ -67,7 +68,6 @@ function renderQuestions() {
     }
     questionsContainer.appendChild(questionElement);
   }
-  
 }
 
 function setCheckedAttributes() {
