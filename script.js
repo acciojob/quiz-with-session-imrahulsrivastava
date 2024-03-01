@@ -16,7 +16,7 @@ const questions = [
   },
   {
     question: "Which is the largest planet in our solar system?",
-    choices: ["Earth", "Jupiter", "Mars", "Mercury"],
+    choices: ["Earth", "Jupiter", "Mars", "Saturn"],
     answer: "Jupiter",
   },
   {
@@ -35,7 +35,7 @@ const scoreContainer = document.getElementById("score");
 renderQuestions();
 
 submitButton.addEventListener("click", () => {
-  questionsContainer.innerHTML = "";
+  setCheckedAttributes();
   const score = calculateScore();
   scoreContainer.textContent = `Your score is ${score} out of ${questions.length}.`;
 });
@@ -66,6 +66,18 @@ function renderQuestions() {
       questionElement.appendChild(choiceText);
     }
     questionsContainer.appendChild(questionElement);
+  }
+  
+}
+
+function setCheckedAttributes() {
+  for (let i = 0; i < userAnswers.length; i++) {
+    const choiceElements = document.getElementsByName(`question-${i}`);
+    for (let j = 0; j < choiceElements.length; j++) {
+      if (choiceElements[j].value === userAnswers[i]) {
+        choiceElements[j].setAttribute("checked", true);
+      }
+    }
   }
 }
 
